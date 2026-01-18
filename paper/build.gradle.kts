@@ -2,12 +2,15 @@ plugins {
 	id("fabicraft.paper-conventions")
 }
 
+version = "1"
+description = "Main paper plugin"
+
 dependencies {
-	implementation(project(":common"))
-	compileOnly(libs.platform.paper)
+	api(project(":common"))
+	compileOnlyApi(libs.platform.paper)
 
 	compileOnly(libs.plugin.miniplaceholders)
-	implementation(libs.cloud.paper)
+	api(libs.cloud.paper)
 	implementation(libs.cloud.minecraftExtras)
 }
 

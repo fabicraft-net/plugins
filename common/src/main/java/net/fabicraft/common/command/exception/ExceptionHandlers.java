@@ -25,7 +25,7 @@ public final class ExceptionHandlers<C> {
 
 	public ExceptionHandlers() {
 		this.entries.add(new ExceptionHandler<>(InvalidSyntaxException.class, ctx -> Components.translatable(
-				"fabicraft.command.exception.invalid-syntax",
+				"fabicraft.common.command.exception.invalid-syntax",
 				MessageType.ERROR,
 				"/" + ctx.exception().correctSyntax())
 		));
@@ -37,7 +37,7 @@ public final class ExceptionHandlers<C> {
 					.map(TypeUtils::simpleName)
 					.collect(Collectors.joining(", "));
 
-			String key = multiple ? "fabicraft.command.exception.invalid-sender-list" : "fabicraft.command.exception.invalid-sender";
+			String key = multiple ? "fabicraft.common.command.exception.invalid-sender-list" : "fabicraft.common.command.exception.invalid-sender";
 			return Components.translatable(
 					key,
 					MessageType.ERROR,
@@ -47,13 +47,13 @@ public final class ExceptionHandlers<C> {
 		}));
 
 		this.entries.add(new ExceptionHandler<>(NoPermissionException.class, ctx -> Components.translatable(
-				"fabicraft.command.exception.no-permission",
+				"fabicraft.common.command.exception.no-permission",
 				MessageType.ERROR,
 				ctx.exception().permissionResult().permission().permissionString()
 		)));
 
 		this.entries.add(new ExceptionHandler<>(ArgumentParseException.class, ctx -> Components.translatable(
-				"fabicraft.command.exception.invalid-argument",
+				"fabicraft.common.command.exception.invalid-argument",
 				MessageType.ERROR,
 				ctx.exception().getCause().getMessage()
 		)));
@@ -73,7 +73,7 @@ public final class ExceptionHandlers<C> {
 			final ClickEvent click = ClickEvent.copyToClipboard(stackTrace);
 
 			return Components.translatable(
-					"fabicraft.command.exception.unexpected",
+					"fabicraft.common.command.exception.unexpected",
 					MessageType.ERROR
 			).hoverEvent(hover).clickEvent(click);
 		}));
