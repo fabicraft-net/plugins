@@ -20,6 +20,9 @@ public final class PlayerListener implements Listener {
 		}
 
 		Location spawnLocation = this.plugin.firstSpawnManager().location();
+		if (spawnLocation == null) {
+			return;
+		}
 		event.setSpawnLocation(spawnLocation);
 	}
 }

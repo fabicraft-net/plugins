@@ -1,23 +1,29 @@
 package net.fabicraft.survival;
 
+import net.fabicraft.paper.FabiCraftPaper;
 import net.fabicraft.survival.command.PaperSurvivalCommand;
 import net.fabicraft.survival.command.commands.SetFirstSpawnCommand;
 import net.fabicraft.survival.listener.PlayerListener;
+import net.fabicraft.survival.locale.SurvivalTranslationManager;
 import net.fabicraft.survival.spawn.FirstSpawnManager;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.incendo.cloud.paper.PaperCommandManager;
 import org.incendo.cloud.paper.util.sender.Source;
+import org.jspecify.annotations.NonNull;
 
+import java.nio.file.Path;
 import java.util.List;
 
 public final class FabiCraftSurvival extends JavaPlugin {
-	private FabiCraftSurvival fabiCraftPaper;
+	private FabiCraftPaper fabiCraftPaper;
 	private FirstSpawnManager firstSpawnManager;
 
 	@Override
 	public void onEnable() {
-		this.fabiCraftPaper = getPlugin(FabiCraftSurvival.class);
+		this.fabiCraftPaper = getPlugin(FabiCraftPaper.class);
+
+		new SurvivalTranslationManager(getSLF4JLogger());
 
 		this.firstSpawnManager = new FirstSpawnManager(this);
 		this.firstSpawnManager.load();
@@ -45,5 +51,10 @@ public final class FabiCraftSurvival extends JavaPlugin {
 		List.of(
 				new SetFirstSpawnCommand(this)
 		).forEach(PaperSurvivalCommand::register);
+	}
+
+	@Override
+	public @NonNull Path getDataPath() {
+		return this.fabiCraftPaper.getDataPath().resolve("survival");
 	}
 }

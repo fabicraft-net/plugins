@@ -40,21 +40,19 @@ public final class FirstSpawnManager {
 
 	public void location(Location location) {
 		this.location = location;
-		save();
 	}
 
 	public Location location() {
 		return this.location;
 	}
 
-	private void save() {
+	public void save() throws IOException {
 		if (this.location == null) {
 			throw new IllegalStateException("Can't save null spawn");
 		}
+		Files.createDirectories(this.path.getParent());
 		try (BufferedWriter writer = Files.newBufferedWriter(this.path)) {
 			this.gson.toJson(this.location.serialize(), writer);
-		} catch (Exception e) {
-			this.plugin.getSLF4JLogger().warn("Failed to write firstspawn.json", e);
 		}
 	}
 }
