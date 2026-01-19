@@ -7,13 +7,17 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.caption.CaptionVariable;
 import org.incendo.cloud.exception.*;
+import org.incendo.cloud.exception.parsing.ParserException;
 import org.incendo.cloud.minecraft.extras.AudienceProvider;
 import org.incendo.cloud.util.TypeUtils;
+import org.slf4j.Logger;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,8 +26,11 @@ import static net.kyori.adventure.text.Component.text;
 
 public final class ExceptionHandlers<C> {
 	private final List<ExceptionHandler<C, ?>> entries = new ArrayList<>();
+	private final Logger logger;
 
-	public ExceptionHandlers() {
+	public ExceptionHandlers(Logger logger) {
+		this.logger = logger;
+
 		this.entries.add(new ExceptionHandler<>(InvalidSyntaxException.class, ctx -> Components.translatable(
 				"fabicraft.common.command.exception.invalid-syntax",
 				MessageType.ERROR,
@@ -72,14 +79,26 @@ public final class ExceptionHandlers<C> {
 			);
 			final ClickEvent click = ClickEvent.copyToClipboard(stackTrace);
 
+			this.logger.error("Couldn't execute command", cause);
+
 			return Components.translatable(
 					"fabicraft.common.command.exception.unexpected",
 					MessageType.ERROR
 			).hoverEvent(hover).clickEvent(click);
 		}));
+
+		this.entries.add(new ExceptionHandler<>(ParserException.class, ctx -> {
+			Object[] variables = Arrays.stream(ctx.exception().captionVariables()).map(CaptionVariable::value).toArray();
+			return Components.translatable(
+					ctx.exception().errorCaption().key(),
+					MessageType.ERROR,
+					variables
+			);
+		}));
 	}
 
 	public void register(CommandManager<C> manager, AudienceProvider<C> audienceProvider) {
 		entries.forEach(entry -> entry.register(manager, audienceProvider));
+		manager.exceptionController().registerHandler(Throwable.class, ctx -> this.logger.error("Unhandled exception", ctx.exception()));
 	}
 }

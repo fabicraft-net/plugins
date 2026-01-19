@@ -6,6 +6,8 @@ import net.fabicraft.common.command.exception.ExceptionHandlers;
 import net.fabicraft.common.locale.BrandColor;
 import net.fabicraft.paper.command.PaperCommand;
 import net.fabicraft.paper.command.commands.BuilderCommand;
+import net.fabicraft.paper.command.commands.CrafterCommand;
+import net.fabicraft.paper.command.commands.SignCommand;
 import net.fabicraft.paper.locale.PaperTranslationManager;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -53,15 +55,17 @@ public final class FabiCraftPaper extends JavaPlugin {
 				.buildOnEnable(this);
 
 		commandManager.captionRegistry().registerProvider(new TranslatableCaptionProvider<>());
-		this.commandManager.exceptionController().clearHandlers();
-		new ExceptionHandlers<Source>().register(commandManager, Source::source);
+		commandManager.exceptionController().clearHandlers();
+		new ExceptionHandlers<Source>(getSLF4JLogger()).register(commandManager, Source::source);
 
 		this.commandManager = commandManager;
 	}
 
 	private void registerCommands() {
 		List.of(
-				new BuilderCommand(this)
+				new BuilderCommand(this),
+				new CrafterCommand(this),
+				new SignCommand(this)
 		).forEach(PaperCommand::register);
 	}
 

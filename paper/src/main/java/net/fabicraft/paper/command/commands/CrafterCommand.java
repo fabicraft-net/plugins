@@ -1,14 +1,14 @@
 package net.fabicraft.paper.command.commands;
 
 import net.fabicraft.paper.FabiCraftPaper;
-import net.fabicraft.paper.command.parser.CrafterMenuTypeParser;
+import net.fabicraft.paper.command.parser.MenuTypeParser;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.MenuType;
 import org.incendo.cloud.context.CommandContext;
 import org.incendo.cloud.paper.util.sender.PlayerSource;
 
 public final class CrafterCommand extends net.fabicraft.paper.command.PaperCommand {
-	private static final String PERMISSION = "sog.paper.command.crafter";
+	private static final String PERMISSION = "fabicraft.paper.command.crafter";
 
 	public CrafterCommand(FabiCraftPaper plugin) {
 		super(plugin);
@@ -21,7 +21,7 @@ public final class CrafterCommand extends net.fabicraft.paper.command.PaperComma
 				.permission(PERMISSION);
 
 		super.manager.command(builder
-				.required("crafter", CrafterMenuTypeParser.menuTypeParser())
+				.required("crafter", MenuTypeParser.crafters())
 				.handler(this::handle)
 		);
 	}

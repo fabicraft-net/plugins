@@ -44,17 +44,13 @@ public final class DyeColorParser<C> implements ArgumentParser<C, DyeColor>, Blo
 	}
 
 	public static final class DyeColorParseException extends ParserException {
-		private DyeColorParseException(
-				final @NonNull String input,
-				final @NonNull CommandContext<?> context
-		) {
+		private DyeColorParseException(final @NonNull String input, final @NonNull CommandContext<?> context) {
 			super(
 					DyeColorParser.class,
 					context,
-					Caption.of("argument.parse.failure.dyecolor"),
+					Caption.of("fabicraft.paper.command.exception.dyecolor"),
 					CaptionVariable.of("input", input)
 			);
 		}
-
 	}
 }

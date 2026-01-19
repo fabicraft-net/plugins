@@ -1,3 +1,5 @@
+import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml.Load
+
 plugins {
 	id("fabicraft.paper-conventions")
 }
@@ -19,4 +21,12 @@ paperPluginYaml {
 	name = prefixedPluginName
 	author = "FabianAdrian"
 	apiVersion = "1.21.11"
+	dependencies {
+		server {
+			register("MiniPlaceholders") {
+				Load.BEFORE
+				required = true
+			}
+		}
+	}
 }
