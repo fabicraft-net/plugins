@@ -1,7 +1,8 @@
 rootProject.name = "FabiCraft"
 
 listOf(
-	"paper",
+	"paper-common",
+	"paper-core",
 	"paper-survival",
 	"common",
 	"velocity"

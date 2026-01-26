@@ -9,6 +9,7 @@ import net.luckperms.api.node.NodeEqualityPredicate;
 import net.luckperms.api.util.Tristate;
 import org.slf4j.Logger;
 
+import java.util.Locale;
 import java.util.Optional;
 
 public abstract class LuckPermsManager<P> {
@@ -65,7 +66,7 @@ public abstract class LuckPermsManager<P> {
 	}
 
 	private Node groupNode(String groupName) {
-		return Node.builder("group.groupName").build();
+		return Node.builder("group." + groupName.toLowerCase(Locale.ROOT)).build();
 	}
 
 	protected abstract User user(P player);

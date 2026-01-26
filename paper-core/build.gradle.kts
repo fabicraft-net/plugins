@@ -4,23 +4,23 @@ plugins {
 	id("fabicraft.paper-conventions")
 }
 
-description = "Survival plugin"
 version = "1"
+description = "Main paper plugin"
 
 dependencies {
 	implementation(project(":paper-common"))
 }
 
 paperPluginYaml {
-	main = "net.fabicraft.paper.survival.FabiCraftPaperSurvival"
+	main = "net.fabicraft.paper.core.FabiCraftPaperCore"
 	name = prefixedPluginName
 	author = "FabianAdrian"
 	apiVersion = "1.21.11"
 	dependencies {
 		server {
-			register("LuckPerms") {
-				required = true
+			register("MiniPlaceholders") {
 				load = PaperPluginYaml.Load.BEFORE
+				required = true
 			}
 		}
 	}
