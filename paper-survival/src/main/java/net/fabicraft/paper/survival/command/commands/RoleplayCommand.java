@@ -2,6 +2,7 @@ package net.fabicraft.paper.survival.command.commands;
 
 import net.draycia.carbon.api.CarbonChat;
 import net.draycia.carbon.api.CarbonChatProvider;
+import net.draycia.carbon.api.channels.ChatChannel;
 import net.fabicraft.common.locale.Components;
 import net.fabicraft.common.locale.MessageType;
 import net.fabicraft.paper.common.command.PaperCommand;
@@ -10,6 +11,7 @@ import net.fabicraft.paper.survival.FabiCraftPaperSurvival;
 import net.fabicraft.paper.survival.player.PlayerData;
 import net.fabicraft.paper.survival.player.PlayerDataManager;
 import net.fabicraft.paper.survival.player.PlayerHeightController;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.entity.Player;
@@ -19,6 +21,7 @@ import org.incendo.cloud.paper.util.sender.PlayerSource;
 import org.incendo.cloud.parser.standard.IntegerParser;
 import org.incendo.cloud.parser.standard.StringParser;
 
+import java.util.List;
 import java.util.Objects;
 
 public final class RoleplayCommand extends PaperCommand<FabiCraftPaperSurvival> {
@@ -35,6 +38,7 @@ public final class RoleplayCommand extends PaperCommand<FabiCraftPaperSurvival> 
 	private static final String PERMISSION_NAME = "fabicraft.paper.survival.command.roleplay.name";
 	private static final String PERMISSION_HEIGHT = "fabicraft.paper.survival.command.roleplay.height";
 	private static final String GROUP_NAME = "roleplay";
+	private static final List<Key> ROLEPLAY_CHAT_CHANNEL_KEYS = List.of(Key.key("carbon", "roleplay"), Key.key("carbon", "me"));
 	private final PaperLuckPermsManager luckPermsManager;
 	private final CarbonChat carbon = CarbonChatProvider.carbonChat();
 	private final PlayerDataManager playerDataManager;
@@ -70,8 +74,12 @@ public final class RoleplayCommand extends PaperCommand<FabiCraftPaperSurvival> 
 		if (this.luckPermsManager.hasGroup(player, GROUP_NAME)) {
 			this.luckPermsManager.removeGroup(player, GROUP_NAME);
 
-			this.carbon.userManager().user(player.getUniqueId())
-					.thenAccept(user -> user.selectedChannel(this.carbon.channelRegistry().defaultChannel()));
+			this.carbon.userManager().user(player.getUniqueId()).thenAccept(user -> {
+				ChatChannel selected = user.selectedChannel();
+				if (selected == null || ROLEPLAY_CHAT_CHANNEL_KEYS.contains(selected.key())) {
+					user.selectedChannel(this.carbon.channelRegistry().defaultChannel());
+				}
+			});
 
 			this.playerHeightController.reset(player);
 
