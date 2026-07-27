@@ -61,7 +61,9 @@ public final class PlayerDataManager {
 						return;
 					}
 					data.characterName(set.getString("character_name"));
-					data.characterHeight(set.getObject("character_height", Integer.class));
+					// set.getInteger can't parse NULL in database, so we have to check it manually
+					int height = set.getInt("character_height");
+					data.characterHeight(set.wasNull() ? null : height);
 					this.data.put(uuid, data);
 				}
 			} catch (SQLException exception) {
