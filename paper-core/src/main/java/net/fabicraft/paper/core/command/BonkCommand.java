@@ -24,6 +24,7 @@ import static org.incendo.cloud.parser.standard.IntegerParser.integerParser;
 public final class BonkCommand extends PaperCommand<FabiCraftPaperCore> {
 	private static final String PERMISSION = "fabicraft.paper.core.command.bonk";
 	private static final String PERMISSION_BROADCAST = "fabicraft.paper.core.command.bonk.broadcast";
+	private static final String PERMISSION_BROADCAST_SENDER = "fabicraft.paper.core.command.bonk.broadcast.sender";
 	private static final Component COMPONENT_BONKED = Components.translatable(
 			"fabicraft.paper.core.command.bonk.bonked",
 			MessageType.WARNING
@@ -60,47 +61,44 @@ public final class BonkCommand extends PaperCommand<FabiCraftPaperCore> {
 			player.sendMessage(COMPONENT_BONKED);
 		});
 
-		Component message;
-		if (players.size() < 2) {
-			message = Components.translatable(
-					"fabicraft.paper.core.command.bonk.single",
-					MessageType.SUCCESS,
-					Components.player(players.iterator().next())
-			);
+		String singleMultipleKey;
+		Component targetComponent;
+		if (players.size() > 1) {
+			singleMultipleKey = "multiple";
+			targetComponent = Components.playerCount(players);
 		} else {
-			message = Components.translatable(
-					"fabicraft.paper.core.command.bonk.multiple",
-					MessageType.SUCCESS,
-					Components.playerCount(players)
-			);
-		}
-		sender.sendMessage(message);
-		sendBroadcast(sender, players);
-	}
-
-	private void sendBroadcast(CommandSender sender, Collection<Player> players) {
-		Component broadcast;
-		if (players.size() < 2) {
-			broadcast = Components.translatable(
-					"fabicraft.paper.core.command.bonk.single.broadcast",
-					MessageType.INFO,
-					Components.player(sender),
-					Components.player(players.iterator().next())
-			);
-		} else {
-			broadcast = Components.translatable(
-					"fabicraft.paper.core.command.bonk.multiple.broadcast",
-					MessageType.INFO,
-					Components.player(sender),
-					Components.playerCount(players)
-			);
+			singleMultipleKey = "single";
+			targetComponent = Components.player(players.iterator().next());
 		}
 
+		sender.sendMessage(Components.translatable(
+				"fabicraft.paper.core.command.bonk." + singleMultipleKey,
+				MessageType.SUCCESS,
+				targetComponent
+		));
+
+		Component broadcastComponent = Components.translatable(
+				"fabicraft.paper.core.command.bonk." + singleMultipleKey + ".broadcast",
+				MessageType.INFO,
+				targetComponent
+		);
+		Component broadcastSenderComponent = Components.translatable(
+				"fabicraft.paper.core.command.bonk. " + singleMultipleKey + " .broadcast.sender",
+				MessageType.INFO,
+				Components.player(sender),
+				targetComponent
+		);
 		this.plugin.getServer().getOnlinePlayers().forEach(player -> {
-			if (player.equals(sender) || players.contains(player) || !player.hasPermission(PERMISSION_BROADCAST)) {
+			if (player.equals(sender) || players.contains(player)) {
 				return;
 			}
-			player.sendMessage(broadcast);
+			if (player.hasPermission(PERMISSION_BROADCAST_SENDER)) {
+				player.sendMessage(broadcastSenderComponent);
+				return;
+			}
+			if (player.hasPermission(PERMISSION_BROADCAST)) {
+				player.sendMessage(broadcastComponent);
+			}
 		});
 	}
 
