@@ -6,6 +6,7 @@ import de.marcely.bedwars.api.game.shop.layout.ShopLayout;
 import de.marcely.bedwars.api.game.shop.layout.ShopLayoutHandler;
 import de.marcely.bedwars.api.game.shop.price.ShopPrice;
 import de.marcely.bedwars.api.message.Message;
+import de.marcely.bedwars.tools.ItemBuilder;
 import de.marcely.bedwars.tools.gui.CenterFormat;
 import de.marcely.bedwars.tools.gui.GUI;
 import de.marcely.bedwars.tools.gui.type.ChestGUI;
@@ -36,7 +37,14 @@ public final class FabiCraftShopLayout implements ShopLayoutHandler, ShopLayout 
 	@Override
 	public GUI build(OpenEvent event) {
 		final Player player = event.getPlayer();
+
+		if (event.getOpenPage() == null) {
+			event.setOpenPage(event.getPages().getFirst());
+		}
+
 		final ChestGUI gui = new ChestGUI(3, event.getSituationalGUITitle());
+
+		event.getOpenPage().setIcon(ItemBuilder.of(event.getOpenPage().getIcon()).glowing().build());
 
 		int maxItemCount = 0;
 		for (ShopPage page : event.getPages()) {
@@ -47,10 +55,6 @@ public final class FabiCraftShopLayout implements ShopLayoutHandler, ShopLayout 
 			if (items > maxItemCount) {
 				maxItemCount = items;
 			}
-		}
-
-		if (event.getOpenPage() == null) {
-			event.setOpenPage(event.getPages().getFirst());
 		}
 
 		gui.setHeight(2 + (maxItemCount + 8) / 9);
