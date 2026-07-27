@@ -26,5 +26,6 @@ plugin-carbon = { module = "de.hexaoxi:carbonchat-api", version = "3.0.0-beta.27
 plugin-citizens = { module = "net.citizensnpcs:citizens-main", version = "2.0.42-SNAPSHOT" }
 plugin-huskhomes = { module = "net.william278.huskhomes:huskhomes-bukkit", version = "4.10" }
 plugin-luckperms = { module = "net.luckperms:api", version = "5.5" }
+plugin-mbedwars = { module = "de.marcely.bedwars:API", version = "5.5.8" }
 plugin-miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "3.2.0" }
 plugin-worldguard = { module = "com.sk89q.worldguard:worldguard-bukkit", version = "7.0.13" }

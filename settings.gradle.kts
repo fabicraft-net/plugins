@@ -3,6 +3,7 @@ rootProject.name = "FabiCraft"
 listOf(
 	"paper-common",
 	"paper-core",
+	"paper-bedwars",
 	"paper-survival",
 	"common",
 	"velocity"
@@ -16,5 +17,6 @@ dependencyResolutionManagement {
 		maven("https://maven.enginehub.org/repo/") // WorldGuard
 		maven("https://repo.william278.net/releases") // HuskHomes, HuskClaims
 		maven("https://maven.citizensnpcs.co/repo") // Citizens
+		maven("https://repo.marcely.de/repository/maven-public/") // MBedwars
 	}
 }
