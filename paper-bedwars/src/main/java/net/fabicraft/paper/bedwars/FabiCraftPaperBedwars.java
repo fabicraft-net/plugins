@@ -2,6 +2,7 @@ package net.fabicraft.paper.bedwars;
 
 import de.marcely.bedwars.api.GameAPI;
 import net.fabicraft.paper.bedwars.command.SpawnCommand;
+import net.fabicraft.paper.bedwars.locale.BedwarsTranslationManager;
 import net.fabicraft.paper.bedwars.shop.FabiCraftShopLayout;
 import net.fabicraft.paper.common.command.CommandManagerProvider;
 import net.fabicraft.paper.common.command.PaperCommand;
@@ -14,6 +15,10 @@ import java.util.List;
 public final class FabiCraftPaperBedwars extends JavaPlugin {
 	private GameAPI api;
 	private PaperCommandManager<Source> commandManager;
+
+	public FabiCraftPaperBedwars() {
+		new BedwarsTranslationManager(getSLF4JLogger());
+	}
 
 	@Override
 	public void onEnable() {
