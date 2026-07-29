@@ -1,9 +1,8 @@
 package net.fabicraft.paper.core;
 
 import io.github.miniplaceholders.api.MiniPlaceholders;
-import net.fabicraft.common.command.ExceptionHandler;
-import net.fabicraft.common.command.MinecraftCaptionProvider;
 import net.fabicraft.common.locale.BrandColor;
+import net.fabicraft.paper.common.command.CommandManagerProvider;
 import net.fabicraft.paper.common.command.PaperCommand;
 import net.fabicraft.paper.common.luckperms.PaperLuckPermsManager;
 import net.fabicraft.paper.core.command.BonkCommand;
@@ -20,9 +19,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.paper.PaperCommandManager;
-import org.incendo.cloud.paper.util.sender.PaperSimpleSenderMapper;
 import org.incendo.cloud.paper.util.sender.Source;
 import org.jetbrains.annotations.NotNull;
 
@@ -51,7 +48,7 @@ public final class FabiCraftPaperCore extends JavaPlugin {
 	public void onEnable() {
 		this.luckPermsManager = new PaperLuckPermsManager(getSLF4JLogger());
 
-		setupCommandManager();
+		this.commandManager = new CommandManagerProvider().manager(this);
 
 		PluginManager pluginManager = getServer().getPluginManager();
 		if (pluginManager.isPluginEnabled("HuskHomes")) {
@@ -94,17 +91,6 @@ public final class FabiCraftPaperCore extends JavaPlugin {
 
 	public HuskHomesHook huskHomesHook() {
 		return this.huskHomesHook;
-	}
-
-	private void setupCommandManager() {
-		PaperCommandManager<Source> commandManager = PaperCommandManager.builder(PaperSimpleSenderMapper.simpleSenderMapper())
-				.executionCoordinator(ExecutionCoordinator.simpleCoordinator())
-				.buildOnEnable(this);
-
-		commandManager.captionRegistry().registerProvider(new MinecraftCaptionProvider<>());
-		new ExceptionHandler<>(getSLF4JLogger(), Source::source).register(commandManager);
-
-		this.commandManager = commandManager;
 	}
 
 	private void registerCommands() {
