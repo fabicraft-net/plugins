@@ -12,11 +12,6 @@ public final class CoreTranslationManager extends net.fabicraft.common.locale.Tr
 	}
 
 	@Override
-	protected List<Locale> bundledLocales() {
-		return List.of(Locale.ENGLISH, Locale.of("fi", "FI"));
-	}
-
-	@Override
 	protected Key name() {
 		return Key.key("fabicraft", "core");
 	}

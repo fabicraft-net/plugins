@@ -43,7 +43,9 @@ public abstract class TranslationManager {
 		return Locale.of("fi", "FI");
 	}
 
-	protected abstract List<Locale> bundledLocales();
+	protected List<Locale> bundledLocales() {
+		return List.of(Locale.ENGLISH, Locale.of("fi", "FI"));
+	}
 
 	protected abstract Key name();
 }
