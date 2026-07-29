@@ -12,12 +12,13 @@ import org.incendo.cloud.paper.util.sender.Source;
 import java.util.List;
 
 public final class FabiCraftPaperBedwars extends JavaPlugin {
-	private final GameAPI api = GameAPI.get();
+	private GameAPI api;
 	private PaperCommandManager<Source> commandManager;
 
 	@Override
 	public void onEnable() {
-		GameAPI.get().registerShopLayout(new FabiCraftShopLayout(this));
+		this.api = GameAPI.get();
+		this.api.registerShopLayout(new FabiCraftShopLayout(this));
 		this.commandManager = new CommandManagerProvider().manager(this);
 		registerCommands();
 	}
