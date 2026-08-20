@@ -83,7 +83,7 @@ public final class BonkCommand extends PaperCommand<FabiCraftPaperCore> {
 				targetComponent
 		);
 		Component broadcastSenderComponent = Components.translatable(
-				"fabicraft.paper.core.command.bonk. " + singleMultipleKey + " .broadcast.sender",
+				"fabicraft.paper.core.command.bonk." + singleMultipleKey + ".broadcast.sender",
 				MessageType.INFO,
 				Components.player(sender),
 				targetComponent
